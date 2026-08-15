@@ -1,0 +1,19 @@
+*.iml
+.gradle/
+.kotlin/
+/local.properties
+/.idea/
+.DS_Store
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+*.jks
+*.keystore
+
+# APKs e AABs gerados (build outputs, não devem ir pro repo, e o
+# EsterSabino-prototipo-debug.apk tem ~60MB, acima do limite do GitHub)
+*.apk
+*.aab

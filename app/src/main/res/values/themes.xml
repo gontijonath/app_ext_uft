@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- O visual real é definido em Compose (ui/theme). Este tema serve à janela
+         antes do primeiro frame, evitando o "flash" branco na abertura. -->
+    <style name="Theme.EsterSabino" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/uft_fundo</item>
+        <item name="android:statusBarColor">@color/uft_verde</item>
+        <item name="android:navigationBarColor">@color/uft_fundo</item>
+    </style>
+</resources>

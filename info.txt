@@ -1,0 +1,7 @@
+Preciso desenvolver um aplicativo para apresentar determinadas áreas da Universide Federal do Tocantins (UFT)
+
+
+Diretrizes:
+
+- O APP deve possuir a identidade visual da UFT (paleta de cores da logo), predominância em verde, seme exagero.
+- 

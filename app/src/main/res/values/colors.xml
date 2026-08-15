@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Extraídas da logo oficial da UFT (imagens/logo.png) -->
+    <color name="uft_verde">#00897C</color>
+    <color name="uft_amarelo">#FDB92E</color>
+    <color name="uft_azul_marinho">#28146E</color>
+    <color name="uft_fundo">#FFFFFF</color>
+    <color name="ic_launcher_background">#00897C</color>
+</resources>
