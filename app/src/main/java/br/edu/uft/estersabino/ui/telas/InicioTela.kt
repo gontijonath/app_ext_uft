@@ -2,6 +2,7 @@ package br.edu.uft.estersabino.ui.telas
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,7 +19,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -27,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,10 +61,14 @@ fun InicioTela(
     aoAbrirProjeto: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // `remember` puro (não `rememberSaveable`/`rememberScrollState`) de propósito:
+    // ao sair da aba e voltar, a tela sempre reabre do topo, em vez de restaurar
+    // a rolagem de onde a pessoa deixou.
+    val rolagem = remember { ScrollState(0) }
     Column(
         modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rolagem)
             .padding(horizontal = 20.dp)
             .padding(top = 8.dp, bottom = 32.dp)
     ) {

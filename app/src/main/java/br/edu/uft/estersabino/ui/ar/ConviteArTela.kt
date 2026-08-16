@@ -45,6 +45,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -135,7 +136,12 @@ fun ConviteArTela(
                             val activity = view.context as? Activity
                             if (activity != null) {
                                 capturando = true
-                                // Um respiro para o frame sem os botões chegar à tela.
+                                // Espera alguns quadros de verdade renderizarem (não só a
+                                // recomposição do Compose, mas o desenho da câmera/avatar
+                                // na GPU) antes de capturar — em alguns aparelhos, um delay
+                                // fixo corre o risco de disparar a captura cedo demais e
+                                // sair uma foto em branco.
+                                repeat(3) { withFrameNanos {} }
                                 delay(150)
                                 val bitmap = capturarJanela(activity)
                                 capturando = false
