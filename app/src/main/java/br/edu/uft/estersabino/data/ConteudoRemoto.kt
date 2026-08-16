@@ -1,6 +1,8 @@
 package br.edu.uft.estersabino.data
 
 import android.util.Log
+import br.edu.uft.estersabino.ui.comum.MembroEquipe
+import br.edu.uft.estersabino.ui.comum.equipeGrupo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -36,6 +38,9 @@ suspend fun carregarConteudoRemoto() {
 
         runCatching { aplicarProjetos(buscarTabela("projetos")) }
             .onFailure { Log.w(TAG, "Falha ao buscar projetos, mantendo padrão", it) }
+
+        runCatching { aplicarEquipe(buscarTabela("equipe")) }
+            .onFailure { Log.w(TAG, "Falha ao buscar equipe, mantendo padrão", it) }
     }
 }
 
@@ -171,5 +176,26 @@ private fun aplicarProjetos(linhas: JSONArray) {
     // projeto inteiro da tela de Projetos.
     if (novos.map { it.id }.toSet() == atuais.keys) {
         Conteudo.projetos = novos
+    }
+}
+
+/**
+ * Só `nome` e `papel` vêm do Supabase — foto e cor continuam vindo do app,
+ * casadas pelo mesmo [MembroEquipe.id] (ver comentário na definição).
+ */
+private fun aplicarEquipe(linhas: JSONArray) {
+    if (linhas.length() == 0) return
+    val atuais = equipeGrupo.associateBy { it.id }
+    val novos = (0 until linhas.length()).map { i ->
+        val l = linhas.getJSONObject(i)
+        val id = l.getString("id")
+        val atual = atuais[id] ?: return
+        atual.copy(
+            nome = l.stringOu("nome", atual.nome),
+            papel = l.stringOu("papel", atual.papel),
+        )
+    }
+    if (novos.map { it.id }.toSet() == atuais.keys) {
+        equipeGrupo = novos
     }
 }

@@ -233,3 +233,28 @@ insert into projetos (id, titulo, sigla, subtitulo, legenda_foto, sobre, contato
     ]'::jsonb,
     null
 );
+
+-- =========================================================================== equipe
+-- Uma linha por integrante do grupo (carrossel de rosto+papel na tela Início).
+-- Só nome e papel são editáveis por aqui — a foto e a cor de cada uma
+-- continuam fixas no app, casadas pelo "id".
+
+create table equipe (
+    id text primary key,
+    nome text not null,
+    papel text not null
+);
+
+alter table equipe enable row level security;
+
+create policy "equipe: leitura pública"
+    on equipe for select
+    to anon
+    using (true);
+
+insert into equipe (id, nome, papel) values
+    ('patricia', 'Patricia Gontijo', 'Facilitadora Digital'),
+    ('luisa', 'Luisa Gabrielly', 'Mediadora Virtual'),
+    ('ruth', 'Ruth Carvalho', 'Moderadora'),
+    ('vivian', 'Vivian Maria', 'Pacificadora'),
+    ('isadora', 'Isadora Ribeiro', 'Secretária');
