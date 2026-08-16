@@ -169,7 +169,7 @@ object Conteudo {
      */
     fun textoConviteRa(): String {
         val nomeProjeto = projetoPorId(evento.projetoId)?.titulo ?: evento.chamada
-        return "Vem conhecer o $nomeProjeto com a gente! 🦴✨"
+        return "Venha visitar o $nomeProjeto com a gente! 🦴✨"
     }
 
     // ------------------------------------------------------------- Saiba Mais

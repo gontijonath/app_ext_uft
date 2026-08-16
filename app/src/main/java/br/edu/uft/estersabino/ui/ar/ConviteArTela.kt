@@ -237,6 +237,7 @@ private fun CenaRealidadeAumentada() {
 
         TextoSubindo(
             texto = Conteudo.textoConviteRa(),
+            duracaoMs = 6500,
             modifier = Modifier
                 .fillMaxSize()
                 .alpha(entrada),
@@ -271,7 +272,11 @@ private fun CenaSimplificada() {
             animacao = CenaAvatar.ANIMACAO,
             modifier = Modifier.fillMaxSize(),
         )
-        TextoSubindo(texto = Conteudo.textoConviteRa(), modifier = Modifier.fillMaxSize())
+        TextoSubindo(
+            texto = Conteudo.textoConviteRa(),
+            duracaoMs = 6500,
+            modifier = Modifier.fillMaxSize(),
+        )
         DicaInferior(texto = "Modo simplificado")
     }
 }
