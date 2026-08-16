@@ -61,7 +61,7 @@ enum class Aba(
 ) {
     INICIO("inicio", "Início", Icons.Filled.Home),
     PROJETOS("projetos", "Projetos", Icons.AutoMirrored.Filled.List),
-    EVENTO("evento", "EVENTO", Icons.Filled.Star),
+    EVENTO("evento", "Evento", Icons.Filled.Star),
     SAIBA_MAIS("saiba-mais", "Saiba Mais", Icons.Filled.Info),
 }
 
