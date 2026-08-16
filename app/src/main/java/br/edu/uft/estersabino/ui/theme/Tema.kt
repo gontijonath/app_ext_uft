@@ -1,7 +1,6 @@
 package br.edu.uft.estersabino.ui.theme
 
 import android.app.Activity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
@@ -13,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 
@@ -30,14 +30,14 @@ private val EsquemaClaro = lightColorScheme(
     tertiaryContainer = CoresUft.AmareloSuave,
     onTertiaryContainer = CoresUft.AmareloEscuro,
 
-    background = CoresUft.Branco,
+    background = CoresUft.Creme,
     onBackground = CoresUft.Grafite,
     surface = CoresUft.Branco,
     onSurface = CoresUft.Grafite,
     surfaceVariant = CoresUft.OffWhite,
     onSurfaceVariant = CoresUft.Cinza,
 
-    outline = Color(0xFFD3D6D6),
+    outline = CoresUft.BordaCard,
     outlineVariant = Color(0xFFE7EAEA),
 )
 
@@ -67,24 +67,37 @@ private val EsquemaEscuro = darkColorScheme(
 )
 
 /**
- * Tipografia com hierarquia um pouco mais marcada que o padrão do Material, para
- * dar peso aos títulos das seções num app majoritariamente de leitura.
+ * Par tipográfico Sora (títulos) + Manrope (corpo) — importado do estilo
+ * visual definido no Claude Design. Hierarquia mais marcada que o padrão do
+ * Material, para dar peso aos títulos das seções num app majoritariamente de
+ * leitura. Ver [FamiliaSora] e [FamiliaManrope] em `Tipografia.kt`.
  */
 private val TipografiaUft = Typography().run {
     copy(
-        displaySmall = displaySmall.copy(fontWeight = FontWeight.Bold),
-        headlineMedium = headlineMedium.copy(fontWeight = FontWeight.Bold),
-        headlineSmall = headlineSmall.copy(fontWeight = FontWeight.Bold),
-        titleLarge = titleLarge.copy(fontWeight = FontWeight.Bold),
-        titleMedium = titleMedium.copy(fontWeight = FontWeight.SemiBold),
-        bodyLarge = bodyLarge.copy(lineHeight = 26.sp),
-        bodyMedium = bodyMedium.copy(lineHeight = 22.sp),
-        labelLarge = labelLarge.copy(fontWeight = FontWeight.SemiBold),
+        displayLarge = displayLarge.copy(fontFamily = FamiliaSora),
+        displayMedium = displayMedium.copy(fontFamily = FamiliaSora),
+        displaySmall = displaySmall.copy(fontFamily = FamiliaSora, fontWeight = FontWeight.Bold),
+        headlineLarge = headlineLarge.copy(fontFamily = FamiliaSora),
+        headlineMedium = headlineMedium.copy(fontFamily = FamiliaSora, fontWeight = FontWeight.Bold),
+        headlineSmall = headlineSmall.copy(fontFamily = FamiliaSora, fontWeight = FontWeight.Bold),
+        titleLarge = titleLarge.copy(fontFamily = FamiliaSora, fontWeight = FontWeight.Bold),
+        titleMedium = titleMedium.copy(fontFamily = FamiliaSora, fontWeight = FontWeight.SemiBold),
+        titleSmall = titleSmall.copy(fontFamily = FamiliaSora, fontWeight = FontWeight.SemiBold),
+        // Justificado (as duas margens alinhadas, como no Word) — pedido pra
+        // todo o texto corrido do app. Só afeta parágrafos com mais de uma
+        // linha; texto de uma linha só (rótulos, botões) fica igual.
+        bodyLarge = bodyLarge.copy(fontFamily = FamiliaManrope, lineHeight = 26.sp, textAlign = TextAlign.Justify),
+        bodyMedium = bodyMedium.copy(fontFamily = FamiliaManrope, lineHeight = 22.sp, textAlign = TextAlign.Justify),
+        bodySmall = bodySmall.copy(fontFamily = FamiliaManrope, textAlign = TextAlign.Justify),
+        labelLarge = labelLarge.copy(fontFamily = FamiliaManrope, fontWeight = FontWeight.SemiBold),
+        labelMedium = labelMedium.copy(fontFamily = FamiliaManrope),
+        labelSmall = labelSmall.copy(fontFamily = FamiliaManrope),
     )
 }
 
 /** Estilo do texto animado da RA — precisa ser legível sobre qualquer fundo. */
 val EstiloConviteRa = TextStyle(
+    fontFamily = FamiliaSora,
     fontSize = 34.sp,
     lineHeight = 40.sp,
     fontWeight = FontWeight.Black,
@@ -93,7 +106,11 @@ val EstiloConviteRa = TextStyle(
 
 @Composable
 fun TemaEsterSabino(
-    escuro: Boolean = isSystemInDarkTheme(),
+    // Sempre claro, mesmo se o celular estiver no tema escuro do sistema:
+    // todo o visual desta versão (ilustrações, cores, chips) foi desenhado
+    // só para o fundo creme. O modo escuro (EsquemaEscuro) fica pronto no
+    // código pra quando alguém quiser adaptar o resto das telas pra ele.
+    escuro: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val esquema = if (escuro) EsquemaEscuro else EsquemaClaro

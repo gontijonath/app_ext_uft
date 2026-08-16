@@ -1,6 +1,8 @@
 package br.edu.uft.estersabino.ui.telas
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,33 +11,36 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.edu.uft.estersabino.R
 import br.edu.uft.estersabino.data.Conteudo
 import br.edu.uft.estersabino.ui.comum.AvisoSuave
 import br.edu.uft.estersabino.ui.comum.EspacoSecao
-import br.edu.uft.estersabino.ui.comum.ListaComMarcadores
-import br.edu.uft.estersabino.ui.comum.SecaoParagrafo
-import br.edu.uft.estersabino.ui.comum.TituloSecao
 import br.edu.uft.estersabino.ui.theme.CoresUft
+import br.edu.uft.estersabino.ui.theme.TemaEsterSabino
 
 @Composable
 fun SaibaMaisTela(modifier: Modifier = Modifier) {
@@ -44,42 +49,57 @@ fun SaibaMaisTela(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 20.dp)
-            .padding(top = 20.dp, bottom = 32.dp)
+            .padding(top = 16.dp, bottom = 32.dp)
     ) {
         RetratoHomenageada()
 
         EspacoSecao()
-        SecaoParagrafo(Conteudo.SAIBA_TITULO_NOME, Conteudo.SAIBA_TEXTO_NOME)
+        SecaoComPonto(Conteudo.SAIBA_TITULO_NOME, Conteudo.SAIBA_TEXTO_NOME, CoresUft.Roxo)
 
         EspacoSecao()
-        SecaoParagrafo(Conteudo.SAIBA_TITULO_QUEM, Conteudo.SAIBA_TEXTO_QUEM)
+        SecaoComPonto(Conteudo.SAIBA_TITULO_QUEM, Conteudo.SAIBA_TEXTO_QUEM, CoresUft.Turquesa)
 
-        Spacer(Modifier.height(16.dp))
-        ListaComMarcadores(Conteudo.saibaFeitos)
+        Spacer(Modifier.height(14.dp))
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Conteudo.saibaFeitos.forEach { feito ->
+                Surface(
+                    color = CoresUft.CremeCard,
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Row(Modifier.padding(12.dp)) {
+                        Text("🏆", modifier = Modifier.padding(end = 8.dp))
+                        Text(
+                            text = feito,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+        }
 
         EspacoSecao()
-        SecaoParagrafo(Conteudo.SAIBA_TITULO_LIGACAO, Conteudo.SAIBA_TEXTO_LIGACAO)
+        SecaoComPonto(Conteudo.SAIBA_TITULO_LIGACAO, Conteudo.SAIBA_TEXTO_LIGACAO, CoresUft.AmareloEscuro)
 
         EspacoSecao()
-        AvisoSuave(Conteudo.SAIBA_AVISO_DADOS)
+        AvisoSuave("💡 ${Conteudo.SAIBA_AVISO_DADOS}")
 
         EspacoSecao()
-        TituloSecao(Conteudo.SAIBA_TITULO_CREDITOS)
-        Spacer(Modifier.height(12.dp))
+        TituloComPonto(Conteudo.SAIBA_TITULO_CREDITOS, CoresUft.Coral)
+        Spacer(Modifier.height(14.dp))
         Surface(
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(22.dp),
+            border = BorderStroke(1.dp, CoresUft.BordaCard),
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Column(
-                Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
+            Column(Modifier.padding(6.dp)) {
                 Conteudo.saibaCreditos.forEachIndexed { indice, (rotulo, valor) ->
                     if (indice > 0) {
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        HorizontalDivider(color = CoresUft.BordaCard)
                     }
-                    Row(Modifier.fillMaxWidth()) {
+                    Row(Modifier.fillMaxWidth().padding(12.dp)) {
                         Text(
                             text = rotulo,
                             style = MaterialTheme.typography.bodyMedium,
@@ -90,7 +110,7 @@ fun SaibaMaisTela(modifier: Modifier = Modifier) {
                             text = valor,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
-                            fontWeight = FontWeight.Medium,
+                            fontWeight = FontWeight.Bold,
                         )
                     }
                 }
@@ -98,6 +118,16 @@ fun SaibaMaisTela(modifier: Modifier = Modifier) {
         }
 
         EspacoSecao()
+        FontesConsultadas()
+
+        EspacoSecao()
+        Text(
+            text = Conteudo.SAIBA_RODAPE_FONTES,
+            style = MaterialTheme.typography.labelSmall,
+            fontStyle = FontStyle.Italic,
+            color = CoresUft.CinzaClaro,
+        )
+        Spacer(Modifier.height(6.dp))
         Text(
             text = Conteudo.RODAPE_VERSAO,
             style = MaterialTheme.typography.labelSmall,
@@ -107,50 +137,94 @@ fun SaibaMaisTela(modifier: Modifier = Modifier) {
 }
 
 /**
- * Retrato da homenageada.
- *
- * Enquanto não houver uma foto com licença de uso confirmada, mostramos uma
- * marca gráfica com as iniciais. Publicar foto de pessoa real sem autorização
- * não é uma decisão que o protótipo deva tomar sozinho.
+ * Lista das fontes usadas pra escrever sobre cada projeto — fica fechada por
+ * padrão (é material de referência, não leitura principal) e os links abrem
+ * no navegador ao toque.
+ */
+@Composable
+private fun FontesConsultadas() {
+    var expandido by remember { mutableStateOf(false) }
+    val uriHandler = LocalUriHandler.current
+
+    Surface(
+        color = CoresUft.CremeCard,
+        shape = RoundedCornerShape(18.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { expandido = !expandido },
+    ) {
+        Column(Modifier.padding(14.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = Conteudo.SAIBA_TITULO_FONTES,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = if (expandido) "▲" else "▼",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            if (expandido) {
+                Spacer(Modifier.height(12.dp))
+                Conteudo.fontesConsultadas.forEach { (projeto, fontes) ->
+                    Text(
+                        text = projeto,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = CoresUft.Verde,
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    fontes.forEach { (rotulo, url) ->
+                        Text(
+                            text = "•  $rotulo",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = CoresUft.AzulInstitucional,
+                            textDecoration = TextDecoration.Underline,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 3.dp)
+                                .clickable { uriHandler.openUri(url) },
+                        )
+                    }
+                    Spacer(Modifier.height(10.dp))
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Retrato ilustrado da homenageada, encomendado pela equipe pra essa versão
+ * do app — não é uma foto real, é uma ilustração de estilo autoral, o que
+ * evita a questão de licença de uso de imagem de pessoa real.
  */
 @Composable
 private fun RetratoHomenageada() {
-    Box(
-        Modifier
+    Image(
+        painter = painterResource(R.drawable.ester_sabino_retrato),
+        contentDescription = "Ilustração de Ester Sabino em um laboratório, observando " +
+            "um diagrama filogenético, cercada por equipamentos de sequenciamento genético.",
+        modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .background(
-                Brush.linearGradient(listOf(CoresUft.AzulInstitucional, CoresUft.AzulMarinho))
-            ),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Surface(
-                color = Color.White.copy(alpha = 0.15f),
-                shape = RoundedCornerShape(50),
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Person,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier
-                        .padding(14.dp)
-                        .size(40.dp),
-                )
-            }
-            Spacer(Modifier.height(14.dp))
-            Text(
-                text = Conteudo.NOME_PLATAFORMA,
-                style = MaterialTheme.typography.headlineSmall,
-                color = Color.White,
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = "Espaço reservado para o retrato da homenageada",
-                style = MaterialTheme.typography.labelSmall,
-                color = Color.White.copy(alpha = 0.75f),
-            )
+            .height(210.dp)
+            .clip(RoundedCornerShape(26.dp)),
+        contentScale = ContentScale.Crop,
+    )
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun SaibaMaisTelaPreview() {
+    TemaEsterSabino {
+        Surface {
+            SaibaMaisTela()
         }
     }
 }

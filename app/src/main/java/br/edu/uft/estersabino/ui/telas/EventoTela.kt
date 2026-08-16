@@ -1,6 +1,8 @@
 package br.edu.uft.estersabino.ui.telas
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,36 +10,32 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material.icons.filled.ViewInAr
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.edu.uft.estersabino.data.Conteudo
 import br.edu.uft.estersabino.ui.comum.EspacoSecao
-import br.edu.uft.estersabino.ui.comum.SecaoParagrafo
-import br.edu.uft.estersabino.ui.comum.Selo
+import br.edu.uft.estersabino.ui.comum.ManchaDecorativa
 import br.edu.uft.estersabino.ui.theme.CoresUft
+import br.edu.uft.estersabino.ui.theme.TemaEsterSabino
 
 @Composable
 fun EventoTela(
@@ -46,7 +44,6 @@ fun EventoTela(
 ) {
     val evento = Conteudo.evento
     val projeto = Conteudo.projetoPorId(evento.projetoId)
-    val numeroProjeto = Conteudo.projetos.indexOfFirst { it.id == evento.projetoId } + 1
 
     Column(
         modifier
@@ -61,11 +58,23 @@ fun EventoTela(
 
         Column(Modifier.padding(horizontal = 20.dp, vertical = 24.dp)) {
 
-            LinhaInfo(Icons.Filled.CalendarMonth, "Data", evento.data)
-            Spacer(Modifier.height(12.dp))
-            LinhaInfo(Icons.Filled.Schedule, "Horário", evento.horario)
-            Spacer(Modifier.height(12.dp))
-            LinhaInfo(Icons.Filled.LocationOn, "Local", evento.local, evento.localDetalhe)
+            Surface(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(22.dp),
+                border = BorderStroke(1.dp, CoresUft.BordaCard),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Column {
+                    LinhaInfo("📅", "Data", evento.data, cor = CoresUft.Turquesa, corClara = CoresUft.TurquesaSuave)
+                    HorizontalDivider(color = CoresUft.BordaCard)
+                    LinhaInfo("🕒", "Horário", evento.horario, cor = CoresUft.AmareloEscuro, corClara = CoresUft.AmareloSuave)
+                    HorizontalDivider(color = CoresUft.BordaCard)
+                    LinhaInfo(
+                        "📍", "Local", evento.local, evento.localDetalhe,
+                        cor = CoresUft.Roxo, corClara = CoresUft.RoxoSuave,
+                    )
+                }
+            }
 
             EspacoSecao()
 
@@ -75,17 +84,13 @@ fun EventoTela(
             )
 
             EspacoSecao()
-            SecaoParagrafo("Programação", evento.programacao)
-
-            EspacoSecao()
-            SecaoParagrafo("Sobre o projeto apresentado", evento.descricao)
+            SecaoComPonto("Programação", evento.programacao, CoresUft.Turquesa)
 
             EspacoSecao()
 
             if (projeto != null) {
                 FichaProjeto(
                     projeto = projeto,
-                    numero = if (numeroProjeto > 0) numeroProjeto else 1,
                     mostrarCapa = false,
                 )
             }
@@ -93,16 +98,47 @@ fun EventoTela(
     }
 }
 
+/**
+ * Cabeçalho da tela de evento: mesmo gradiente e manchas decorativas do
+ * cabeçalho do app, com o selo torto trazido do estilo importado.
+ */
 @Composable
 private fun CabecalhoEvento(selo: String, titulo: String, chamada: String) {
     Box(
         Modifier
             .fillMaxWidth()
-            .background(Brush.verticalGradient(listOf(CoresUft.Verde, CoresUft.VerdeEscuro)))
+            .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp))
+            .background(Brush.verticalGradient(listOf(CoresUft.Turquesa, CoresUft.VerdeEscuro)))
     ) {
-        Column(Modifier.padding(20.dp)) {
-            Selo(selo)
-            Spacer(Modifier.height(16.dp))
+        ManchaDecorativa(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .offset(x = 34.dp, y = (-34).dp),
+            tamanho = 150.dp,
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .offset(x = 20.dp, y = (-14).dp)
+                .size(10.dp)
+                .clip(RoundedCornerShape(percent = 50))
+                .background(CoresUft.Amarelo.copy(alpha = 0.7f))
+        )
+        Column(Modifier.padding(22.dp)) {
+            Surface(
+                modifier = Modifier.graphicsLayer { rotationZ = -3f },
+                color = CoresUft.Amarelo,
+                shape = RoundedCornerShape(percent = 50),
+            ) {
+                Text(
+                    text = "🎉 $selo",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Black,
+                    color = CoresUft.Grafite,
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp),
+                )
+            }
+            Spacer(Modifier.height(18.dp))
             Text(
                 text = titulo,
                 style = MaterialTheme.typography.headlineMedium,
@@ -120,31 +156,34 @@ private fun CabecalhoEvento(selo: String, titulo: String, chamada: String) {
 
 @Composable
 private fun LinhaInfo(
-    icone: ImageVector,
+    emoji: String,
     rotulo: String,
     valor: String,
     detalhe: String? = null,
+    cor: Color,
+    corClara: Color,
 ) {
-    Row(verticalAlignment = Alignment.Top) {
-        Surface(
-            color = MaterialTheme.colorScheme.primaryContainer,
-            shape = RoundedCornerShape(10.dp),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(44.dp)
+                .clip(RoundedCornerShape(14.dp))
+                .background(corClara),
+            contentAlignment = Alignment.Center,
         ) {
-            Icon(
-                imageVector = icone,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(20.dp),
-            )
+            Text(emoji, style = MaterialTheme.typography.titleMedium)
         }
         Spacer(Modifier.width(14.dp))
         Column {
             Text(
                 text = rotulo.uppercase(),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary,
+                color = cor,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(Modifier.height(2.dp))
@@ -179,33 +218,45 @@ private fun BotaoRealidadeAumentada(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Button(
-            onClick = onClick,
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp),
-            shape = RoundedCornerShape(18.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = CoresUft.Amarelo,
-                contentColor = CoresUft.Grafite,
-            ),
+                .height(66.dp)
+                .clip(RoundedCornerShape(percent = 50))
+                .clickable(onClick = onClick),
+            color = CoresUft.Amarelo,
+            shape = RoundedCornerShape(percent = 50),
+            shadowElevation = 6.dp,
         ) {
-            Icon(
-                imageVector = Icons.Filled.ViewInAr,
-                contentDescription = null,
-                modifier = Modifier.size(26.dp),
-            )
-            Spacer(Modifier.width(12.dp))
-            Text(
-                text = "Ver o convite em RA",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text("📦", style = MaterialTheme.typography.headlineSmall)
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    text = "Ver o convite em RA",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Black,
+                    color = CoresUft.Grafite,
+                )
+            }
         }
         Text(
             text = textoConvite,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun EventoTelaPreview() {
+    TemaEsterSabino {
+        Surface {
+            EventoTela(aoAbrirRa = {})
+        }
     }
 }

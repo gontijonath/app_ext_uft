@@ -55,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import br.edu.uft.estersabino.data.Conteudo
 import br.edu.uft.estersabino.ui.theme.CoresUft
 import com.google.ar.core.Config
 import com.google.ar.core.TrackingState
@@ -62,9 +63,6 @@ import io.github.sceneview.ar.ARSceneView
 import io.github.sceneview.math.Position
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-/** Texto que sobe em loop sobre a câmera. */
-private const val TEXTO_CONVITE = "Venha nos conhecer!!"
 
 /**
  * Tela cheia do convite em realidade aumentada.
@@ -238,7 +236,7 @@ private fun CenaRealidadeAumentada() {
         }
 
         TextoSubindo(
-            texto = TEXTO_CONVITE,
+            texto = Conteudo.textoConviteRa(),
             modifier = Modifier
                 .fillMaxSize()
                 .alpha(entrada),
@@ -273,7 +271,7 @@ private fun CenaSimplificada() {
             animacao = CenaAvatar.ANIMACAO,
             modifier = Modifier.fillMaxSize(),
         )
-        TextoSubindo(texto = TEXTO_CONVITE, modifier = Modifier.fillMaxSize())
+        TextoSubindo(texto = Conteudo.textoConviteRa(), modifier = Modifier.fillMaxSize())
         DicaInferior(texto = "Modo simplificado")
     }
 }

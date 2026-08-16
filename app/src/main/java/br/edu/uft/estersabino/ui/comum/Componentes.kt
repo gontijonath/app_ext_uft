@@ -20,10 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.edu.uft.estersabino.ui.theme.CoresUft
@@ -54,7 +56,7 @@ fun ImagemPlaceholder(
         modifier = modifier
             .then(if (larguraCheia) Modifier.fillMaxWidth() else Modifier)
             .height(altura.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(20.dp))
             .background(Brush.linearGradient(cores)),
         contentAlignment = Alignment.Center,
     ) {
@@ -174,7 +176,7 @@ fun AvisoSuave(texto: String, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.tertiaryContainer,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
     ) {
         Text(
             text = texto,
@@ -212,3 +214,39 @@ fun EspacoSecao() = Spacer(Modifier.height(24.dp))
 fun CaixaCentral(conteudo: @Composable () -> Unit) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { conteudo() }
 }
+
+/**
+ * "Mancha" circular translúcida usada como toque decorativo nos cabeçalhos em
+ * gradiente — vem do estilo importado do Claude Design (um círculo suave no
+ * canto do hero). Posicionamento fica a cargo de quem chama, via [modifier]
+ * (ex.: `Modifier.align(Alignment.TopEnd).offset(x = 30.dp, y = (-30).dp)`).
+ */
+@Composable
+fun ManchaDecorativa(
+    modifier: Modifier = Modifier,
+    tamanho: Dp = 140.dp,
+    cor: Color = Color.White.copy(alpha = 0.12f),
+) {
+    Box(
+        modifier
+            .size(tamanho)
+            .clip(RoundedCornerShape(50))
+            .background(cor)
+    )
+}
+
+/**
+ * Sombra suave e colorida (em vez da sombra cinza padrão do Material) —
+ * aproxima o `box-shadow` tingido do design importado nos cards que pedem
+ * mais destaque.
+ */
+fun Modifier.sombraSuave(
+    cor: Color = CoresUft.Verde,
+    raio: Dp = 20.dp,
+    elevacao: Dp = 10.dp,
+): Modifier = this.shadow(
+    elevation = elevacao,
+    shape = RoundedCornerShape(raio),
+    ambientColor = cor.copy(alpha = 0.18f),
+    spotColor = cor.copy(alpha = 0.18f),
+)
