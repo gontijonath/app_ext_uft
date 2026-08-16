@@ -123,6 +123,10 @@ fun ConviteArTela(
         // Some com os controles no instante da captura: a foto que o visitante
         // compartilha sai só com o avatar e o convite, sem os botões do app.
         if (!capturando) {
+            if (temPermissao) {
+                MiniMapaEvento()
+            }
+
             BarraSuperior(
                 aoFechar = aoFechar,
                 aoCapturar = if (temPermissao) {
