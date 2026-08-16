@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Busca o conteúdo (textos dos projetos, evento etc.) no Supabase ao
+         abrir o app, para permitir correções depois de publicado sem
+         precisar de uma nova versão. Se não houver internet, o app usa os
+         textos padrão embutidos — ver Conteudo.kt e ConteudoRemoto.kt. -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- A câmera é essencial para o convite em RA, mas o app inteiro (projetos,
          evento, saiba mais) funciona sem ela, então não exigimos o hardware. -->
