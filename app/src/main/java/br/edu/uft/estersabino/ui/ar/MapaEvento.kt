@@ -8,6 +8,7 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,13 +31,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -109,14 +114,25 @@ fun MiniMapaEvento(modifier: Modifier = Modifier) {
     }
 }
 
+private const val ZOOM_MINIMO = 1f
+private const val ZOOM_MAXIMO = 5f
+
 /**
  * Fica no centro da tela, sobre um fundo escurecido. Não tem botão de fechar
  * próprio — os cantos já são ocupados pelos botões de fechar/capturar da
  * [ConviteArTela], então tocar em qualquer lugar fora do mapa fecha (padrão
  * comum de "toque fora para fechar").
+ *
+ * A imagem aceita pinça para dar zoom (até 5x) e arrastar com o dedo depois
+ * de ampliada, pra dar pra ler os nomes dos blocos menores. Como o estado de
+ * zoom é `remember` simples, ele reseta sozinho toda vez que o mapa é
+ * reaberto (o `AnimatedVisibility` descarta o conteúdo ao fechar).
  */
 @Composable
 private fun MapaExpandido(aoFechar: () -> Unit) {
+    var escala by remember { mutableFloatStateOf(1f) }
+    var deslocamento by remember { mutableStateOf(Offset.Zero) }
+
     Box(
         Modifier
             .fillMaxSize()
@@ -140,11 +156,39 @@ private fun MapaExpandido(aoFechar: () -> Unit) {
                     painter = painterResource(R.drawable.mapa_evento),
                     contentDescription = "Mapa de como chegar ao evento",
                     contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer {
+                            scaleX = escala
+                            scaleY = escala
+                            translationX = deslocamento.x
+                            translationY = deslocamento.y
+                        }
+                        .pointerInput(Unit) {
+                            detectTransformGestures { _, pan, zoom, _ ->
+                                val novaEscala = (escala * zoom).coerceIn(ZOOM_MINIMO, ZOOM_MAXIMO)
+                                escala = novaEscala
+                                deslocamento = if (novaEscala <= ZOOM_MINIMO) {
+                                    Offset.Zero
+                                } else {
+                                    // Limita o arrasto para a imagem não sumir de vez da tela.
+                                    val limiteX = size.width * (novaEscala - 1) / 2
+                                    val limiteY = size.height * (novaEscala - 1) / 2
+                                    Offset(
+                                        x = (deslocamento.x + pan.x * novaEscala).coerceIn(-limiteX, limiteX),
+                                        y = (deslocamento.y + pan.y * novaEscala).coerceIn(-limiteY, limiteY),
+                                    )
+                                }
+                            }
+                        },
                 )
             }
             Text(
-                text = "Toque em qualquer lugar para fechar",
+                text = if (escala > ZOOM_MINIMO) {
+                    "Belisque para ajustar o zoom"
+                } else {
+                    "Belisque a imagem para ampliar · toque fora para fechar"
+                },
                 color = Color.White.copy(alpha = 0.75f),
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.padding(top = 14.dp),

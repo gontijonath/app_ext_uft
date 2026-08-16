@@ -27,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -66,7 +67,19 @@ enum class Aba(
 }
 
 private const val ROTA_RA = "convite-ra"
-private const val ARG_PROJETO = "projetoId"
+
+/**
+ * Qual projeto abrir quando a aba "Projetos" for composta a seguir.
+ *
+ * Existia uma segunda rota ("projetos?projetoId={id}") só pra carregar esse
+ * valor pelo argumento de navegação — mas ter duas rotas diferentes pro
+ * mesmo destino (uma com e outra sem o parâmetro) confundia o mecanismo de
+ * salvar/restaurar estado do NavHost ao trocar de aba: a pílula de baixo
+ * marcava a aba certa, mas o conteúdo da tela ficava travado na anterior.
+ * Uma única rota, com esse valor entregue por fora, evita o problema de
+ * raiz — ver [Aba.PROJETOS] usado sempre com a mesma rota.
+ */
+private var projetoParaAbrir: String? = null
 
 @Composable
 fun AppEsterSabino() {
@@ -97,21 +110,21 @@ fun AppEsterSabino() {
                     InicioTela(
                         aoAbrirEvento = { navController.navegarParaAba(Aba.EVENTO) },
                         aoAbrirProjeto = { id ->
-                            navController.navigate("${Aba.PROJETOS.rota}?$ARG_PROJETO=$id") {
-                                launchSingleTop = true
-                            }
+                            projetoParaAbrir = id
+                            navController.navegarParaAba(Aba.PROJETOS)
                         },
                     )
                 }
 
                 composable(Aba.PROJETOS.rota) {
-                    ProjetosTela(projetoSelecionadoId = null)
-                }
-
-                composable("${Aba.PROJETOS.rota}?$ARG_PROJETO={$ARG_PROJETO}") { entrada ->
-                    ProjetosTela(
-                        projetoSelecionadoId = entrada.arguments?.getString(ARG_PROJETO),
-                    )
+                    // Só lê (e limpa) uma vez por visita a esta tela — se lesse
+                    // a cada recomposição, a pílula selecionada "voltaria" pro
+                    // projeto de origem sempre que qualquer outra coisa na tela
+                    // mudasse.
+                    val idInicial = remember {
+                        projetoParaAbrir.also { projetoParaAbrir = null }
+                    }
+                    ProjetosTela(projetoSelecionadoId = idInicial)
                 }
 
                 composable(Aba.EVENTO.rota) {
@@ -223,9 +236,7 @@ private fun BarraInferior(
             .padding(6.dp),
     ) {
         Aba.entries.forEach { aba ->
-            val selecionada = rotaAtual?.hierarchy?.any { destino ->
-                destino.route == aba.rota || destino.route?.startsWith("${aba.rota}?") == true
-            } == true
+            val selecionada = rotaAtual?.hierarchy?.any { it.route == aba.rota } == true
 
             Column(
                 modifier = Modifier
