@@ -16,6 +16,6 @@ package br.edu.uft.estersabino.data
  * (Settings → API → Project URL / anon public key).
  */
 object SupabaseConfig {
-    const val URL = ""
-    const val ANON_KEY = ""
+    const val URL = "https://setwuamahcvyuyhgxttw.supabase.co"
+    const val ANON_KEY = "sb_publishable_WsiQI0RbhiiSBZHeTlkHOg_jodcGPGd"
 }
