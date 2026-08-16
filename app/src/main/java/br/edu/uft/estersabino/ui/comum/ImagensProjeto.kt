@@ -30,8 +30,8 @@ data class MembroEquipe(
 )
 
 val equipeGrupo: List<MembroEquipe> = listOf(
-    MembroEquipe("Patrícia Gontijo", "Facilitadora Digital", R.drawable.avatar_patricia, CoresUft.Turquesa, CoresUft.TurquesaSuave),
-    MembroEquipe("Luísa Gabrielly", "Mediadora Virtual", R.drawable.avatar_luisa, CoresUft.Verde, CoresUft.TurquesaSuave),
+    MembroEquipe("Patricia Gontijo", "Facilitadora Digital", R.drawable.avatar_patricia, CoresUft.Turquesa, CoresUft.TurquesaSuave),
+    MembroEquipe("Luisa Gabrielly", "Mediadora Virtual", R.drawable.avatar_luisa, CoresUft.Verde, CoresUft.TurquesaSuave),
     MembroEquipe("Ruth Carvalho", "Moderadora", R.drawable.avatar_ruth, CoresUft.Roxo, CoresUft.RoxoSuave),
     MembroEquipe("Vivian Maria", "Pacificadora", R.drawable.avatar_vivian, CoresUft.Coral, CoresUft.CoralSuave),
     MembroEquipe("Isadora Ribeiro", "Secretária", R.drawable.avatar_isadora, CoresUft.AmareloEscuro, CoresUft.AmareloSuave),
