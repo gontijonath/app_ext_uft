@@ -47,35 +47,39 @@ object Conteudo {
                     "extensão em saúde da UFT: 1.480 m² de área construída em dois pavimentos, " +
                     "com 33 consultórios, salas de teleconsulta, auditório, espaços de " +
                     "simulação clínica, sala de imunização, curativos e central de " +
-                    "esterilização. O funcionamento é gradual e ocorre somente mediante " +
-                    "agendamento (não é pronto-socorro nem porta aberta), com atendimentos " +
-                    "realizados por estudantes dos cursos de Medicina, Enfermagem e Nutrição " +
-                    "(com colaboração do curso de Psicologia do Câmpus de Miracema) sob " +
-                    "supervisão docente, nas áreas de clínica médica, pediatria, ginecologia e " +
-                    "obstetrícia, saúde mental, infectologia, vacinação, testagem e " +
-                    "acompanhamento nutricional. A criação da Cesau amplia a integração da UFT " +
-                    "com o Sistema Único de Saúde (SUS) e é um passo relevante rumo ao futuro " +
-                    "Hospital Universitário de Palmas, cuja área já foi definida em parceria " +
-                    "com a Prefeitura. Para a comunidade de Palmas, representa mais acesso a " +
-                    "atendimento especializado gratuito; para a UFT e os cursos de saúde, é " +
-                    "campo de estágio supervisionado e de projetos de extensão " +
-                    "interdisciplinares; e para a turma visitante, é a chance de conhecer uma " +
-                    "estrutura hospitalar-escola de referência recém-entregue e as " +
-                    "possibilidades de carreira nas profissões de saúde.",
+                    "esterilização. Apesar de já inaugurada, a unidade ainda não está em " +
+                    "funcionamento; a abertura ao público está prevista para breve, de forma " +
+                    "gradual e somente mediante agendamento (não é pronto-socorro nem porta " +
+                    "aberta), com atendimentos realizados por estudantes dos cursos de " +
+                    "Medicina, Enfermagem e Nutrição (com colaboração do curso de Psicologia " +
+                    "do Câmpus de Miracema) sob supervisão docente, nas áreas de clínica " +
+                    "médica, pediatria, ginecologia e obstetrícia, saúde mental, infectologia, " +
+                    "vacinação, testagem e acompanhamento nutricional. A criação da Cesau " +
+                    "amplia a integração da UFT com o Sistema Único de Saúde (SUS) e é um " +
+                    "passo relevante rumo ao futuro Hospital Universitário de Palmas, cuja " +
+                    "área já foi definida em parceria com a Prefeitura. Para a comunidade de " +
+                    "Palmas, vai representar mais acesso a atendimento especializado gratuito " +
+                    "assim que abrir; para a UFT e os cursos de saúde, já é campo de estágio " +
+                    "supervisionado e de projetos de extensão interdisciplinares em preparação; " +
+                    "e para a turma visitante, é a chance de conhecer uma estrutura " +
+                    "hospitalar-escola de referência recém-entregue, ainda em fase de " +
+                    "implantação, e as possibilidades de carreira nas profissões de saúde.",
                 contatos = listOf(
                     "Instagram" to "@uftoficial (perfil institucional da UFT, que divulga a " +
                         "programação da Cesau)",
                     "Local" to "Câmpus de Palmas, UFT, Quadra 109 Norte, ALCNO-14, Avenida " +
                         "NS-15, Bloco Bala I, Palmas/TO, CEP 77001-090",
                     "Telefone" to "(63) 3229-4683 (central de agendamento presencial do " +
-                        "Câmpus de Palmas)",
+                        "Câmpus de Palmas, para confirmar o início do funcionamento)",
                 ),
-                observacao = "Por ser uma unidade recém-inaugurada (mar/2026), a Cesau ainda " +
-                    "não possui e-mail e Instagram próprios amplamente divulgados; o " +
-                    "agendamento específico por curso deve ser confirmado com as coordenações " +
-                    "de Medicina, Enfermagem e Nutrição. Fontes: portal Coren-TO, " +
-                    "jornaldotocantins.com.br, ojornal.net e coluna Cleber Toledo, links na " +
-                    "seção \"Fontes consultadas\", em Saiba Mais.",
+                observacao = "Por ser uma unidade recém-inaugurada (mar/2026) que ainda não " +
+                    "entrou em funcionamento, a Cesau ainda não possui e-mail e Instagram " +
+                    "próprios amplamente divulgados, nem data confirmada de abertura ao " +
+                    "público; o agendamento específico por curso deve ser confirmado com as " +
+                    "coordenações de Medicina, Enfermagem e Nutrição assim que os atendimentos " +
+                    "começarem. Fontes: portal Coren-TO, jornaldotocantins.com.br, ojornal.net " +
+                    "e coluna Cleber Toledo, links na seção \"Fontes consultadas\", em Saiba " +
+                    "Mais, além de confirmação direta com a coordenação do curso.",
             ),
             Projeto(
                 id = "projeto-2",
