@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,7 +47,12 @@ fun ProjetosTela(
     val indiceInicial = remember(projetoSelecionadoId) {
         projetos.indexOfFirst { it.id == projetoSelecionadoId }.coerceAtLeast(0)
     }
-    var abaSelecionada by rememberSaveable(projetoSelecionadoId) {
+    // `remember` puro, não `rememberSaveable`: o valor salvo pelo mecanismo de
+    // saveState/restoreState do NavHost (ao trocar de aba) ficava "restaurando"
+    // a pílula da visita anterior a esta tela, ignorando qual projeto a pessoa
+    // acabou de escolher no Início — mesma causa do bug de rolagem corrigido
+    // antes, agora afetando qual projeto abre.
+    var abaSelecionada by remember(projetoSelecionadoId) {
         mutableIntStateOf(indiceInicial)
     }
 
